@@ -31,7 +31,45 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: Center(),
+      body: Column(
+        children: <Widget>[
+          //seek bar
+
+          // visualize
+          Container(
+            width: double.infinity,
+            height: 125.0,
+          ),
+          // song title, artist name, and controls
+          Container(
+            color: Colors.black,
+            child: Column(
+              children: <Widget>[
+                RichText(
+                  text: TextSpan(
+                    text: '',
+                    children: [
+                      TextSpan(
+                        text: 'Song Title\n',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 4.0,
+                          height: 1.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Row(
+                  children: <Widget>[],
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
