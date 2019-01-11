@@ -36,7 +36,14 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           //seek bar
           Expanded(
-            child: Container(),
+            child: Center(
+              child: Container(
+                color: Colors.black,
+                width: 125.0,
+                height: 125.0,
+                
+              ),
+            ),
           ),
           // visualize
           Container(
