@@ -59,6 +59,15 @@ class _HomeState extends State<Home> {
                           height: 1.5,
                         ),
                       ),
+                      TextSpan(
+                        text: 'Artist Name',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.75),
+                          fontSize: 12.0,
+                          letterSpacing: 3.0,
+                          height: 1.5,
+                        ),
+                      ),
                     ],
                   ),
                 ),
