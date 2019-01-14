@@ -16,24 +16,36 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
-  double _seekPercent = 0.25;
+  double _seekPercent = 0.1;
   PolarCoord _startDragCoord;
   double _startDragPercent;
+  double _currentDragPercent;
 
   void _onDragStart(PolarCoord coord) {
-
+    _startDragCoord = coord;
+    _startDragPercent = _seekPercent;
   }
 
   void _onDragUpdate(PolarCoord coord) {
+    final dragAngle = coord.angle - _startDragCoord.angle;
+    final dragPercent = dragAngle / (2 * pi);
 
+    setState(
+        () => _currentDragPercent = (_startDragPercent + dragPercent) % 1.0);
   }
 
   void _onDragEnd() {
-
+    setState(() {
+      _seekPercent = _currentDragPercent;
+      _currentDragPercent = null;
+      _startDragCoord = null;
+      _startDragPercent = 0.0;
+    });
   }
+
   @override
   Widget build(BuildContext context) {
+    _seekPercent = _seekPercent;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -70,9 +82,9 @@ class _HomeState extends State<Home> {
                     height: 135.0,
                     child: RadialProgressBar(
                       trackColor: const Color(0xFFDDDDDD),
-                      progressPercent: _seekPercent,
+                      progressPercent: _currentDragPercent ?? _seekPercent,
                       progressColor: accentColor,
-                      thumbPosition: _seekPercent,
+                      thumbPosition: _currentDragPercent ?? _seekPercent, 
                       thumbColor: lightAccentColor,
                       innerPadding: const EdgeInsets.all(10.0),
                       child: ClipOval(
