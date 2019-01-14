@@ -16,6 +16,22 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  double _seekPercent = 0.25;
+  PolarCoord _startDragCoord;
+  double _startDragPercent;
+
+  void _onDragStart(PolarCoord coord) {
+
+  }
+
+  void _onDragUpdate(PolarCoord coord) {
+
+  }
+
+  void _onDragEnd() {
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +57,9 @@ class _HomeState extends State<Home> {
           //seek bar
           Expanded(
             child: RadialDragGestureDetector(
+              onRadialDragStart: _onDragStart,
+              onRadialDragUpdate: _onDragUpdate,
+              onRadialDragEnd: _onDragEnd,
               child: Container(
                 width: double.infinity,
                 height: double.infinity,
@@ -51,9 +70,9 @@ class _HomeState extends State<Home> {
                     height: 135.0,
                     child: RadialProgressBar(
                       trackColor: const Color(0xFFDDDDDD),
-                      progressPercent: 0.25,
+                      progressPercent: _seekPercent,
                       progressColor: accentColor,
-                      thumbPosition: 0.25,
+                      thumbPosition: _seekPercent,
                       thumbColor: lightAccentColor,
                       innerPadding: const EdgeInsets.all(10.0),
                       child: ClipOval(
