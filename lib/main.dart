@@ -45,6 +45,8 @@ class _HomeState extends State<Home> {
                 width: 125.0,
                 height: 125.0,
                 child: RadialSeekBar(
+                  progressPercent: 0.2,
+                  thumbPosition: 0.2,
                   child: ClipOval(
                     clipper: CircleClipper(),
                     child: Image.network(
@@ -153,13 +155,37 @@ class RadialSeekBarPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     
     final center = Offset(size.width / 2, size.height / 2);
-    final radius = min(size.width, size.height) / 2;
+    final radius = (min(size.width, size.height) / 2) + 3;
     // paint track
     canvas.drawCircle(
       center,
       radius,
       trackPaint,
     );
+
+    //paint progress
+    final progressAngle = 2 * pi * progressPercent;
+    canvas.drawArc(
+      Rect.fromCircle(
+        center: center,
+        radius: radius, 
+      ), 
+      -pi / 2, 
+      progressAngle, 
+      false, 
+      progressPaint);
+
+      // Paint Thumb
+      final thumbAngle = 2 * pi * thumbPosition - (pi / 2);
+      final thumbX = cos(thumbAngle) * radius + 2;
+      final thumbY = sin(thumbAngle) * radius;
+      final thumbCenter = Offset(thumbX, thumbY) + center;
+      final thumbRadius = thumbSize / 2.0;
+      canvas.drawCircle(
+        thumbCenter,
+        thumbRadius,
+        thumbPaint,
+        );
   }
 
   @override
