@@ -40,22 +40,27 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           //seek bar
           Expanded(
-            child: Center(
-              child: Container(
-                width: 135.0,
-                height: 135.0,
-                child: RadialSeekBar(
-                  trackColor: const Color(0xFFDDDDDD),
-                  progressPercent: 0.25,
-                  progressColor: accentColor,
-                  thumbPosition: 0.25,
-                  thumbColor: lightAccentColor,
-                  innerPadding: const EdgeInsets.all(10.0),
-                  child: ClipOval(
-                    clipper: CircleClipper(),
-                    child: Image.network(
-                      demoPlaylist.songs[0].albumArtUrl,
-                      fit: BoxFit.cover,
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: Colors.transparent,
+              child: Center(
+                child: Container(
+                  width: 135.0,
+                  height: 135.0,
+                  child: RadialProgressBar(
+                    trackColor: const Color(0xFFDDDDDD),
+                    progressPercent: 0.25,
+                    progressColor: accentColor,
+                    thumbPosition: 0.25,
+                    thumbColor: lightAccentColor,
+                    innerPadding: const EdgeInsets.all(10.0),
+                    child: ClipOval(
+                      clipper: CircleClipper(),
+                      child: Image.network(
+                        demoPlaylist.songs[0].albumArtUrl,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
@@ -75,7 +80,7 @@ class _HomeState extends State<Home> {
   }
 }
 
-class RadialSeekBar extends StatefulWidget {
+class RadialProgressBar extends StatefulWidget {
 
   final double trackWidth;
   final Color trackColor;
@@ -89,7 +94,7 @@ class RadialSeekBar extends StatefulWidget {
   final EdgeInsets innerPadding;
   final Widget child;
 
-  RadialSeekBar({
+  RadialProgressBar({
     this.trackWidth = 3.0,
     this.trackColor = Colors.grey,
     this.progressWidth = 5.0,
@@ -104,10 +109,10 @@ class RadialSeekBar extends StatefulWidget {
   });
 
   @override
-  _RadialSeekBarState createState() => _RadialSeekBarState();
+  _RadialProgressBarState createState() => _RadialProgressBarState();
 }
 
-class _RadialSeekBarState extends State<RadialSeekBar> {
+class _RadialProgressBarState extends State<RadialProgressBar> {
 
   EdgeInsets _insetsForPainter() {
     final outerThickness = max(
@@ -121,7 +126,7 @@ class _RadialSeekBarState extends State<RadialSeekBar> {
     return Padding(
       padding: widget.outerPadding,
       child: CustomPaint(
-        painter: RadialSeekBarPainter(
+        painter: RadialProgressBarPainter(
           trackWidth: widget.trackWidth,
           trackColor: widget.trackColor,
           progressWidth: widget.progressWidth,
@@ -140,7 +145,7 @@ class _RadialSeekBarState extends State<RadialSeekBar> {
   }
 }
 
-class RadialSeekBarPainter extends CustomPainter {
+class RadialProgressBarPainter extends CustomPainter {
 
   final double trackWidth;
   final Paint trackPaint;
@@ -151,7 +156,7 @@ class RadialSeekBarPainter extends CustomPainter {
   final Paint thumbPaint;
   final double thumbPosition;
 
-  RadialSeekBarPainter({
+  RadialProgressBarPainter({
     @required this.trackWidth,
     @required trackColor,
     @required this.progressWidth,
