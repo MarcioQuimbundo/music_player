@@ -151,7 +151,15 @@ class RadialSeekBarPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // paint the track
+    
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = min(size.width, size.height) / 2;
+    // paint track
+    canvas.drawCircle(
+      center,
+      radius,
+      trackPaint,
+    );
   }
 
   @override
