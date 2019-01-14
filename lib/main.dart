@@ -1,9 +1,9 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:music_player/bottom_controls.dart';
 import 'package:music_player/theme.dart';
 import 'package:music_player/songs.dart';
+import 'package:music_player/fluttery/lib/gestures.dart';
 
 void main() =>
     runApp(MaterialApp(debugShowCheckedModeBanner: false, home: Home()));
@@ -40,26 +40,28 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           //seek bar
           Expanded(
-            child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              color: Colors.transparent,
-              child: Center(
-                child: Container(
-                  width: 135.0,
-                  height: 135.0,
-                  child: RadialProgressBar(
-                    trackColor: const Color(0xFFDDDDDD),
-                    progressPercent: 0.25,
-                    progressColor: accentColor,
-                    thumbPosition: 0.25,
-                    thumbColor: lightAccentColor,
-                    innerPadding: const EdgeInsets.all(10.0),
-                    child: ClipOval(
-                      clipper: CircleClipper(),
-                      child: Image.network(
-                        demoPlaylist.songs[0].albumArtUrl,
-                        fit: BoxFit.cover,
+            child: RadialDragGestureDetector(
+              child: Container(
+                width: double.infinity,
+                height: double.infinity,
+                color: Colors.transparent,
+                child: Center(
+                  child: Container(
+                    width: 135.0,
+                    height: 135.0,
+                    child: RadialProgressBar(
+                      trackColor: const Color(0xFFDDDDDD),
+                      progressPercent: 0.25,
+                      progressColor: accentColor,
+                      thumbPosition: 0.25,
+                      thumbColor: lightAccentColor,
+                      innerPadding: const EdgeInsets.all(10.0),
+                      child: ClipOval(
+                        clipper: CircleClipper(),
+                        child: Image.network(
+                          demoPlaylist.songs[0].albumArtUrl,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
@@ -81,7 +83,6 @@ class _HomeState extends State<Home> {
 }
 
 class RadialProgressBar extends StatefulWidget {
-
   final double trackWidth;
   final Color trackColor;
   final double progressWidth;
@@ -113,14 +114,13 @@ class RadialProgressBar extends StatefulWidget {
 }
 
 class _RadialProgressBarState extends State<RadialProgressBar> {
-
   EdgeInsets _insetsForPainter() {
-    final outerThickness = max(
-      widget.trackWidth,
-      max(widget.progressWidth, widget.thumbSize)
-    ) / 2.0 ;
+    final outerThickness =
+        max(widget.trackWidth, max(widget.progressWidth, widget.thumbSize)) /
+            2.0;
     return EdgeInsets.all(outerThickness);
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -146,7 +146,6 @@ class _RadialProgressBarState extends State<RadialProgressBar> {
 }
 
 class RadialProgressBarPainter extends CustomPainter {
-
   final double trackWidth;
   final Paint trackPaint;
   final double progressWidth;
@@ -165,18 +164,18 @@ class RadialProgressBarPainter extends CustomPainter {
     @required this.thumbSize,
     @required thumbColor,
     @required this.thumbPosition,
-  }) : trackPaint = Paint()
-      ..color = trackColor
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = trackWidth,
-      progressPaint = Paint()
-      ..color = progressColor
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = progressWidth
-      ..strokeCap = StrokeCap.round,
-      thumbPaint = Paint()
-      ..color = thumbColor
-      ..style;
+  })  : trackPaint = Paint()
+          ..color = trackColor
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = trackWidth,
+        progressPaint = Paint()
+          ..color = progressColor
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = progressWidth
+          ..strokeCap = StrokeCap.round,
+        thumbPaint = Paint()
+          ..color = thumbColor
+          ..style;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -187,7 +186,7 @@ class RadialProgressBarPainter extends CustomPainter {
     );
 
     final center = Offset(size.width / 2, size.height / 2);
-    final radius = (min(constrainedSize.width, constrainedSize.height) / 2) ;
+    final radius = (min(constrainedSize.width, constrainedSize.height) / 2);
     // paint track
     canvas.drawCircle(
       center,
@@ -198,31 +197,30 @@ class RadialProgressBarPainter extends CustomPainter {
     //paint progress
     final progressAngle = 2 * pi * progressPercent;
     canvas.drawArc(
-      Rect.fromCircle(
-        center: center,
-        radius: radius, 
-      ), 
-      -pi / 2, 
-      progressAngle, 
-      false, 
-      progressPaint);
+        Rect.fromCircle(
+          center: center,
+          radius: radius,
+        ),
+        -pi / 2,
+        progressAngle,
+        false,
+        progressPaint);
 
-      // Paint Thumb
-      final thumbAngle = 2 * pi * thumbPosition - (pi / 2);
-      final thumbX = cos(thumbAngle) * radius;
-      final thumbY = sin(thumbAngle) * radius;
-      final thumbCenter = Offset(thumbX, thumbY) + center;
-      final thumbRadius = thumbSize / 2.0;
-      canvas.drawCircle(
-        thumbCenter,
-        thumbRadius,
-        thumbPaint,
-        );
+    // Paint Thumb
+    final thumbAngle = 2 * pi * thumbPosition - (pi / 2);
+    final thumbX = cos(thumbAngle) * radius;
+    final thumbY = sin(thumbAngle) * radius;
+    final thumbCenter = Offset(thumbX, thumbY) + center;
+    final thumbRadius = thumbSize / 2.0;
+    canvas.drawCircle(
+      thumbCenter,
+      thumbRadius,
+      thumbPaint,
+    );
   }
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return true;
   }
-
 }
