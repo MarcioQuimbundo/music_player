@@ -16,11 +16,77 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  double _seekPercent = 0.1;
+  
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          color: const Color(0xFFDDDDDD),
+          onPressed: () {},
+        ),
+        title: Text(''),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.menu),
+            color: const Color(0xFFDDDDDD),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: Column(
+        children: <Widget>[
+          //seek bar
+          Expanded(
+            child: new RadialSeekBar(),
+          ),
+          // visualizer
+          Container(
+            width: double.infinity,
+            height: 125.0,
+          ),
+          // song title, artist name, and controls
+          new BottomControls(),
+        ],
+      ),
+    );
+  }
+}
+
+class RadialSeekBar extends StatefulWidget {
+
+  final double seekPercent;
+
+  RadialSeekBar({
+    this.seekPercent = 0.0,
+  });
+  @override
+  RadialSeekBarState createState() {
+    return new RadialSeekBarState();
+  }
+}
+
+class RadialSeekBarState extends State<RadialSeekBar> {
+  
+  double _seekPercent = 0.0;
   PolarCoord _startDragCoord;
   double _startDragPercent;
   double _currentDragPercent;
 
+  @override
+    void initState() {
+      super.initState();
+      _seekPercent = widget.seekPercent;
+    }
+  @override
+    void didUpdateWidget(RadialSeekBar oldWidget) {
+      super.didUpdateWidget(oldWidget);
+      _seekPercent = widget.seekPercent;
+    }
   void _onDragStart(PolarCoord coord) {
     _startDragCoord = coord;
     _startDragPercent = _seekPercent;
@@ -45,69 +111,35 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    _seekPercent = _seekPercent;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
-          color: const Color(0xFFDDDDDD),
-          onPressed: () {},
-        ),
-        title: Text(''),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.menu),
-            color: const Color(0xFFDDDDDD),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: Column(
-        children: <Widget>[
-          //seek bar
-          Expanded(
-            child: RadialDragGestureDetector(
-              onRadialDragStart: _onDragStart,
-              onRadialDragUpdate: _onDragUpdate,
-              onRadialDragEnd: _onDragEnd,
-              child: Container(
-                width: double.infinity,
-                height: double.infinity,
-                color: Colors.transparent,
-                child: Center(
-                  child: Container(
-                    width: 135.0,
-                    height: 135.0,
-                    child: RadialProgressBar(
-                      trackColor: const Color(0xFFDDDDDD),
-                      progressPercent: _currentDragPercent ?? _seekPercent,
-                      progressColor: accentColor,
-                      thumbPosition: _currentDragPercent ?? _seekPercent, 
-                      thumbColor: lightAccentColor,
-                      innerPadding: const EdgeInsets.all(10.0),
-                      child: ClipOval(
-                        clipper: CircleClipper(),
-                        child: Image.network(
-                          demoPlaylist.songs[0].albumArtUrl,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
+    return RadialDragGestureDetector(
+      onRadialDragStart: _onDragStart,
+      onRadialDragUpdate: _onDragUpdate,
+      onRadialDragEnd: _onDragEnd,
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: Colors.transparent,
+        child: Center(
+          child: Container(
+            width: 135.0,
+            height: 135.0,
+            child: RadialProgressBar(
+              trackColor: const Color(0xFFDDDDDD),
+              progressPercent: _currentDragPercent ?? _seekPercent,
+              progressColor: accentColor,
+              thumbPosition: _currentDragPercent ?? _seekPercent, 
+              thumbColor: lightAccentColor,
+              innerPadding: const EdgeInsets.all(10.0),
+              child: ClipOval(
+                clipper: CircleClipper(),
+                child: Image.network(
+                  demoPlaylist.songs[0].albumArtUrl,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
           ),
-          // visualizer
-          Container(
-            width: double.infinity,
-            height: 125.0,
-          ),
-          // song title, artist name, and controls
-          new BottomControls(),
-        ],
+        ),
       ),
     );
   }
