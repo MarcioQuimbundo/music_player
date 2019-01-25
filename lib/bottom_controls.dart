@@ -1,8 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:fluttery_audio/fluttery_audio.dart';
 import 'package:music_player/theme.dart';
-
-
 
 class BottomControls extends StatelessWidget {
   const BottomControls({
@@ -51,17 +50,11 @@ class BottomControls extends StatelessWidget {
                 child: Row(
                   children: <Widget>[
                     Expanded(child: Container()),
-                    
                     new PreviousButton(),
-
                     Expanded(child: Container()),
-
                     new PlayPauseButton(),
-
                     Expanded(child: Container()),
-                    
                     new NextButton(),
-                    
                     Expanded(child: Container()),
                   ],
                 ),
@@ -81,22 +74,35 @@ class PlayPauseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RawMaterialButton(
-      shape: CircleBorder(),
-      fillColor: Colors.white,
-      splashColor: lightAccentColor,
-      highlightColor: lightAccentColor.withOpacity(0.5),
-      elevation: 10.0,
-      highlightElevation: 5.0,
-      onPressed: () {},
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Icon(
-          Icons.play_arrow,
-          color: darkAccentColor,
-          size: 35.0,
-        ),
-      ),
+    return AudioComponent(
+      playerBuilder: (BuildContext context, AudioPlayer player, Widget child) {
+        IconData icon = Icons.music_note;
+        Function onPressed;
+        if (player.state == AudioPlayerState.playing) {
+          icon = Icons.pause;
+          onPressed = player.pause;
+        } else if (player.state == AudioPlayerState.paused || player.state == AudioPlayerState.completed){
+          icon = Icons.play_arrow;
+          onPressed = player.play;
+        }
+        return RawMaterialButton(
+          shape: CircleBorder(),
+          fillColor: Colors.white,
+          splashColor: lightAccentColor,
+          highlightColor: lightAccentColor.withOpacity(0.5),
+          elevation: 10.0,
+          highlightElevation: 5.0,
+          onPressed: onPressed,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(
+              icon,
+              color: darkAccentColor,
+              size: 35.0,
+            ),
+          ),
+        );
+      },
     );
   }
 }
