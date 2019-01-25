@@ -4,6 +4,7 @@ import 'package:music_player/bottom_controls.dart';
 import 'package:music_player/theme.dart';
 import 'package:music_player/songs.dart';
 import 'package:music_player/fluttery/lib/gestures.dart';
+import 'package:fluttery_audio/fluttery_audio.dart';
 
 void main() =>
     runApp(MaterialApp(debugShowCheckedModeBanner: false, home: Home()));
@@ -16,49 +17,48 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
-          color: const Color(0xFFDDDDDD),
-          onPressed: () {},
-        ),
-        title: Text(''),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.menu),
+    return Audio(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
             color: const Color(0xFFDDDDDD),
             onPressed: () {},
           ),
-        ],
-      ),
-      body: Column(
-        children: <Widget>[
-          //seek bar
-          Expanded(
-            child: new RadialSeekBar(),
-          ),
-          // visualizer
-          Container(
-            width: double.infinity,
-            height: 125.0,
-          ),
-          // song title, artist name, and controls
-          new BottomControls(),
-        ],
+          title: Text(''),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.menu),
+              color: const Color(0xFFDDDDDD),
+              onPressed: () {},
+            ),
+          ],
+        ),
+        body: Column(
+          children: <Widget>[
+            //seek bar
+            Expanded(
+              child: new RadialSeekBar(),
+            ),
+            // visualizer
+            Container(
+              width: double.infinity,
+              height: 125.0,
+            ),
+            // song title, artist name, and controls
+            new BottomControls(),
+          ],
+        ),
       ),
     );
   }
 }
 
 class RadialSeekBar extends StatefulWidget {
-
   final double seekPercent;
 
   RadialSeekBar({
@@ -71,22 +71,23 @@ class RadialSeekBar extends StatefulWidget {
 }
 
 class RadialSeekBarState extends State<RadialSeekBar> {
-  
   double _seekPercent = 0.0;
   PolarCoord _startDragCoord;
   double _startDragPercent;
   double _currentDragPercent;
 
   @override
-    void initState() {
-      super.initState();
-      _seekPercent = widget.seekPercent;
-    }
+  void initState() {
+    super.initState();
+    _seekPercent = widget.seekPercent;
+  }
+
   @override
-    void didUpdateWidget(RadialSeekBar oldWidget) {
-      super.didUpdateWidget(oldWidget);
-      _seekPercent = widget.seekPercent;
-    }
+  void didUpdateWidget(RadialSeekBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _seekPercent = widget.seekPercent;
+  }
+
   void _onDragStart(PolarCoord coord) {
     _startDragCoord = coord;
     _startDragPercent = _seekPercent;
@@ -127,7 +128,7 @@ class RadialSeekBarState extends State<RadialSeekBar> {
               trackColor: const Color(0xFFDDDDDD),
               progressPercent: _currentDragPercent ?? _seekPercent,
               progressColor: accentColor,
-              thumbPosition: _currentDragPercent ?? _seekPercent, 
+              thumbPosition: _currentDragPercent ?? _seekPercent,
               thumbColor: lightAccentColor,
               innerPadding: const EdgeInsets.all(10.0),
               child: ClipOval(
