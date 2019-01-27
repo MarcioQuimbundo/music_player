@@ -18,7 +18,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
-  double _seekPercent;
   @override
   Widget build(BuildContext context) {
     return Audio(
@@ -46,29 +45,7 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             //seek bar
             Expanded(
-              child: AudioComponent(
-                updateMe: [
-                  WatchableAudioProperties.audioPlayhead,
-                  WatchableAudioProperties.audioSeeking,
-                ],
-                playerBuilder: (BuildContext context, AudioPlayer player, Widget child) {
-                  double playbackProgress = 0.0;
-                  if (player.audioLength != null && player.position != null) {
-                    playbackProgress = player.position.inMilliseconds / player.audioLength.inMilliseconds;                    
-                  }
-                  _seekPercent = player.isSeeking ? _seekPercent : null;
-                  return RadialSeekBar(
-                    progress: playbackProgress,
-                    seekPercent: _seekPercent,
-                    onSeekRequested: (double seekPercent) {
-                      setState(() => _seekPercent = seekPercent);
-
-                      final seekMillis = (player.audioLength.inMilliseconds * seekPercent).round();
-                      player.seek(Duration(milliseconds: seekMillis));
-                    },
-                  );
-                },
-              ),
+              child: AudioRadialSeekBar(),
             ),
             // visualizer
             Container(
@@ -76,10 +53,48 @@ class _HomeState extends State<Home> {
               height: 125.0,
             ),
             // song title, artist name, and controls
-            new BottomControls(),
+            BottomControls(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class AudioRadialSeekBar extends StatefulWidget {
+  @override
+  AudioRadialSeekBarState createState() {
+    return new AudioRadialSeekBarState();
+  }
+}
+
+class AudioRadialSeekBarState extends State<AudioRadialSeekBar> {
+  
+  double _seekPercent;
+  @override
+  Widget build(BuildContext context) {
+    return AudioComponent(
+      updateMe: [
+        WatchableAudioProperties.audioPlayhead,
+        WatchableAudioProperties.audioSeeking,
+      ],
+      playerBuilder: (BuildContext context, AudioPlayer player, Widget child) {
+        double playbackProgress = 0.0;
+        if (player.audioLength != null && player.position != null) {
+          playbackProgress = player.position.inMilliseconds / player.audioLength.inMilliseconds;                    
+        }
+        _seekPercent = player.isSeeking ? _seekPercent : null;
+        return RadialSeekBar(
+          progress: playbackProgress,
+          seekPercent: _seekPercent,
+          onSeekRequested: (double seekPercent) {
+            setState(() => _seekPercent = seekPercent);
+
+            final seekMillis = (player.audioLength.inMilliseconds * seekPercent).round();
+            player.seek(Duration(milliseconds: seekMillis));
+          },
+        );
+      },
     );
   }
 }
