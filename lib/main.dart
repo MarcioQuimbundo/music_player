@@ -47,7 +47,16 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             //seek bar
             Expanded(
-              child: AudioRadialSeekBar(),
+              child: AudioPlaylistComponent(
+                playlistBuilder: (BuildContext context, Playlist playlist, Widget child) {
+                  String albumArtUrl = demoPlaylist.songs[playlist.activeIndex].albumArtUrl;
+
+                  return  AudioRadialSeekBar(
+                    albumArtUrl: albumArtUrl,
+                  );
+
+                }
+              ),
             ),
             // visualizer
             Container(
@@ -64,6 +73,13 @@ class _HomeState extends State<Home> {
 }
 
 class AudioRadialSeekBar extends StatefulWidget {
+
+  final String albumArtUrl;
+
+  AudioRadialSeekBar({
+    this.albumArtUrl,
+  });
+
   @override
   AudioRadialSeekBarState createState() {
     return new AudioRadialSeekBarState();
@@ -95,6 +111,13 @@ class AudioRadialSeekBarState extends State<AudioRadialSeekBar> {
             final seekMillis = (player.audioLength.inMilliseconds * seekPercent).round();
             player.seek(Duration(milliseconds: seekMillis));
           },
+          child: Container(
+            color: accentColor,
+            child: Image.network(
+              widget.albumArtUrl,
+              fit: BoxFit.cover,
+            ),
+          ),
         );
       },
     );
@@ -105,11 +128,13 @@ class RadialSeekBar extends StatefulWidget {
   final double progress;
   final double seekPercent;
   final Function(double) onSeekRequested;
+  final Widget child;
 
   RadialSeekBar({
     this.progress = 0.0,
     this.seekPercent = 0.0,
-    this.onSeekRequested
+    this.onSeekRequested,
+    this.child
   });
   @override
   RadialSeekBarState createState() {
@@ -188,10 +213,7 @@ class RadialSeekBarState extends State<RadialSeekBar> {
               innerPadding: const EdgeInsets.all(10.0),
               child: ClipOval(
                 clipper: CircleClipper(),
-                child: Image.network(
-                  demoPlaylist.songs[0].albumArtUrl,
-                  fit: BoxFit.cover,
-                ),
+                child: widget.child,
               ),
             ),
           ),
