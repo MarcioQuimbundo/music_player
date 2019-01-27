@@ -17,6 +17,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  double _seekPercent;
   @override
   Widget build(BuildContext context) {
     return Audio(
@@ -44,7 +46,29 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             //seek bar
             Expanded(
-              child: new RadialSeekBar(),
+              child: AudioComponent(
+                updateMe: [
+                  WatchableAudioProperties.audioPlayhead,
+                  WatchableAudioProperties.audioSeeking,
+                ],
+                playerBuilder: (BuildContext context, AudioPlayer player, Widget child) {
+                  double playbackProgress = 0.0;
+                  if (player.audioLength != null && player.position != null) {
+                    playbackProgress = player.position.inMilliseconds / player.audioLength.inMilliseconds;                    
+                  }
+                  _seekPercent = player.isSeeking ? _seekPercent : null;
+                  return RadialSeekBar(
+                    progress: playbackProgress,
+                    seekPercent: _seekPercent,
+                    onSeekRequested: (double seekPercent) {
+                      setState(() => _seekPercent = seekPercent);
+
+                      final seekMillis = (player.audioLength.inMilliseconds * seekPercent).round();
+                      player.seek(Duration(milliseconds: seekMillis));
+                    },
+                  );
+                },
+              ),
             ),
             // visualizer
             Container(
@@ -61,10 +85,14 @@ class _HomeState extends State<Home> {
 }
 
 class RadialSeekBar extends StatefulWidget {
+  final double progress;
   final double seekPercent;
+  final Function(double) onSeekRequested;
 
   RadialSeekBar({
+    this.progress = 0.0,
     this.seekPercent = 0.0,
+    this.onSeekRequested
   });
   @override
   RadialSeekBarState createState() {
@@ -73,7 +101,7 @@ class RadialSeekBar extends StatefulWidget {
 }
 
 class RadialSeekBarState extends State<RadialSeekBar> {
-  double _seekPercent = 0.0;
+  double _progress = 0.0;
   PolarCoord _startDragCoord;
   double _startDragPercent;
   double _currentDragPercent;
@@ -81,18 +109,18 @@ class RadialSeekBarState extends State<RadialSeekBar> {
   @override
   void initState() {
     super.initState();
-    _seekPercent = widget.seekPercent;
+    _progress = widget.progress;
   }
 
   @override
   void didUpdateWidget(RadialSeekBar oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _seekPercent = widget.seekPercent;
+    _progress = widget.progress;
   }
 
   void _onDragStart(PolarCoord coord) {
     _startDragCoord = coord;
-    _startDragPercent = _seekPercent;
+    _startDragPercent = _progress;
   }
 
   void _onDragUpdate(PolarCoord coord) {
@@ -104,8 +132,10 @@ class RadialSeekBarState extends State<RadialSeekBar> {
   }
 
   void _onDragEnd() {
+    if(widget.onSeekRequested != null){
+      widget.onSeekRequested(_currentDragPercent);
+    }
     setState(() {
-      _seekPercent = _currentDragPercent;
       _currentDragPercent = null;
       _startDragCoord = null;
       _startDragPercent = 0.0;
@@ -114,6 +144,12 @@ class RadialSeekBarState extends State<RadialSeekBar> {
 
   @override
   Widget build(BuildContext context) {
+    double thumbPosition = _progress;
+    if (_currentDragPercent != null) {
+      thumbPosition = _currentDragPercent;
+    } else if (widget.seekPercent != null) {
+      thumbPosition = widget.seekPercent;
+    }
     return RadialDragGestureDetector(
       onRadialDragStart: _onDragStart,
       onRadialDragUpdate: _onDragUpdate,
@@ -128,9 +164,9 @@ class RadialSeekBarState extends State<RadialSeekBar> {
             height: 135.0,
             child: RadialProgressBar(
               trackColor: const Color(0xFFDDDDDD),
-              progressPercent: _currentDragPercent ?? _seekPercent,
+              progressPercent: _progress,
               progressColor: accentColor,
-              thumbPosition: _currentDragPercent ?? _seekPercent,
+              thumbPosition: thumbPosition,
               thumbColor: lightAccentColor,
               innerPadding: const EdgeInsets.all(10.0),
               child: ClipOval(

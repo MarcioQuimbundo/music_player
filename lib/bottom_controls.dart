@@ -75,19 +75,25 @@ class PlayPauseButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AudioComponent(
+      updateMe: [
+        WatchableAudioProperties.audioPlayerState
+      ],
       playerBuilder: (BuildContext context, AudioPlayer player, Widget child) {
         IconData icon = Icons.music_note;
+        Color buttonColor = lightAccentColor;
         Function onPressed;
         if (player.state == AudioPlayerState.playing) {
           icon = Icons.pause;
           onPressed = player.pause;
+          buttonColor = Colors.white;
         } else if (player.state == AudioPlayerState.paused || player.state == AudioPlayerState.completed){
           icon = Icons.play_arrow;
           onPressed = player.play;
+          buttonColor = Colors.white;
         }
         return RawMaterialButton(
           shape: CircleBorder(),
-          fillColor: Colors.white,
+          fillColor: buttonColor,
           splashColor: lightAccentColor,
           highlightColor: lightAccentColor.withOpacity(0.5),
           elevation: 10.0,
