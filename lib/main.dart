@@ -62,6 +62,18 @@ class _HomeState extends State<Home> {
             Container(
               width: double.infinity,
               height: 125.0,
+              child: Visualizer(
+                builder: (BuildContext context, List<int> fft){
+                  return CustomPaint(
+                    painter: new VisualizerPainter(
+                      fft: fft,
+                      height: 125.0,
+                      color: accentColor,
+                    ),
+                    child: Container(),
+                  );
+                },
+              ),
             ),
             // song title, artist name, and controls
             BottomControls(),
@@ -72,6 +84,35 @@ class _HomeState extends State<Home> {
   }
 }
 
+class VisualizerPainter extends CustomPainter {
+
+  final List<int> fft;
+  final double height;
+  final Color color;
+  final Paint wavePaint;
+
+  VisualizerPainter({
+    this.fft,
+    this.height,
+    this.color,
+  }) : wavePaint = new Paint()
+        ..color = color.withOpacity(0.5)
+        ..style = PaintingStyle.fill;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.drawRect(
+      Rect.fromLTWH(0.0, 0.0, size.width, size.height),
+      wavePaint
+    );
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
+  }
+
+}
 class AudioRadialSeekBar extends StatefulWidget {
 
   final String albumArtUrl;
