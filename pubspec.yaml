@@ -10,6 +10,7 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^0.1.2
   fluttery_audio: 0.0.3
+  permission: ^0.1.0
 
 dev_dependencies:
   flutter_test:
