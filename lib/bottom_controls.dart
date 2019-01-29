@@ -35,7 +35,7 @@ class BottomControls extends StatelessWidget {
                         TextSpan(
                           text: '${songTitle.toUpperCase()}\n',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 14.0,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 4.0,
@@ -45,7 +45,7 @@ class BottomControls extends StatelessWidget {
                         TextSpan(
                           text: '${artistName.toUpperCase()}',
                           style: TextStyle(
-                            color: Colors.white.withOpacity(0.75),
+                            color: Colors.black.withOpacity(0.75),
                             fontSize: 12.0,
                             letterSpacing: 3.0,
                             height: 1.5,
@@ -90,23 +90,23 @@ class PlayPauseButton extends StatelessWidget {
       updateMe: [WatchableAudioProperties.audioPlayerState],
       playerBuilder: (BuildContext context, AudioPlayer player, Widget child) {
         IconData icon = Icons.music_note;
-        Color buttonColor = lightAccentColor;
+        Color buttonColor = Colors.black; 
         Function onPressed;
         if (player.state == AudioPlayerState.playing) {
           icon = Icons.pause;
           onPressed = player.pause;
-          buttonColor = Colors.white;
+          buttonColor = Colors.black;
         } else if (player.state == AudioPlayerState.paused ||
             player.state == AudioPlayerState.completed) {
           icon = Icons.play_arrow;
           onPressed = player.play;
-          buttonColor = Colors.white;
+          buttonColor = Colors.black;
         }
         return RawMaterialButton(
           shape: CircleBorder(),
           fillColor: buttonColor,
-          splashColor: lightAccentColor,
-          highlightColor: lightAccentColor.withOpacity(0.5),
+          splashColor: accentColor,
+          highlightColor: accentColor.withOpacity(0.5),
           elevation: 10.0,
           highlightElevation: 5.0,
           onPressed: onPressed,
@@ -114,7 +114,7 @@ class PlayPauseButton extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Icon(
               icon,
-              color: darkAccentColor,
+              color: Colors.white,
               size: 35.0,
             ),
           ),
@@ -134,10 +134,10 @@ class PreviousButton extends StatelessWidget {
     return AudioPlaylistComponent(
       playlistBuilder: (BuildContext context, Playlist playlist, Widget child) {
         return IconButton(
-          splashColor: lightAccentColor,
+          splashColor: Colors.grey,
           highlightColor: Colors.transparent,
           icon: Icon(Icons.skip_previous),
-          color: Colors.white,
+          color: Colors.black,
           iconSize: 36.5,
           onPressed: playlist.previous,
         );
@@ -156,10 +156,10 @@ class NextButton extends StatelessWidget {
     return AudioPlaylistComponent(playlistBuilder:
         (BuildContext context, Playlist playlist, Widget child) {
       return IconButton(
-        splashColor: lightAccentColor,
+        splashColor: Colors.grey,
         highlightColor: Colors.transparent,
         icon: Icon(Icons.skip_next),
-        color: Colors.white,
+        color: Colors.black,
         iconSize: 36.5,
         onPressed: playlist.next,
       );
