@@ -29,19 +29,13 @@ class _HomeState extends State<Home> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0.0,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            color: const Color(0xFFDDDDDD),
-            onPressed: () {},
-          ),
           title: Text(''),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.menu),
-              color: const Color(0xFFDDDDDD),
-              onPressed: () {},
-            ),
-          ],
+          iconTheme: IconThemeData(color: Colors.grey),
+        ),
+        drawer: Drawer(
+          child: ListView(
+            
+          ),
         ),
         body: Column(
           children: <Widget>[
