@@ -14,7 +14,7 @@ Comming Soon
   * [] Beautiful UI with multiple themes(Coming Soon)
   * [] Animation
   * [] Full Fledged Example
-  * [] play (local files)
+  * [x] play (remote files)
   * [] stop
   * [x] pause
   * [x] seek
