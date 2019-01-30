@@ -4,9 +4,9 @@ First Open Source Flutter based Beautiful Material Design Music Player(Online Ra
 
 # Demo App
 
-[Play Store BETA](https://play.google.com/store/apps/details?id=com.mtechviral.fluttermusicplayer)
+Comming Soon
 
-## Features
+## Todos
 
 * [] Android (iOS Coming Soon)
 
@@ -16,22 +16,18 @@ First Open Source Flutter based Beautiful Material Design Music Player(Online Ra
   * [] Full Fledged Example
   * [] play (local files)
   * [] stop
-  * [] pause
-  * [] seek
-  * [] shuffle
+  * [x] pause
+  * [x] seek
+  * [x] shuffle
   * [] Album Art
-  * [] onComplete
+  * [x] onComplete
   * [x] onDuration / onCurrentPosition
-
-* Supported formats
-
-  * [Android](https://developer.android.com/guide/topics/media/media-formats.html)
 
 ### Show some :heart: and star the repo to support the project
 
 ### Screenshots
 
-<img src="flutey.gif" height="300em" /> <img src="flute1.png" height="300em" /> 
+<img src="flute1.png" height="300em" /> 
 
 ## iOS
 
