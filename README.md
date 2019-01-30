@@ -8,7 +8,7 @@ Comming Soon
 
 ## Todos
 
-* [] Android (iOS Coming Soon)
+* [x] Android (iOS Coming Soon)
 
   * [] Fetch local songs (Inbuilt Permission)
   * [] Beautiful UI with multiple themes(Coming Soon)
