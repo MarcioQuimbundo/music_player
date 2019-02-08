@@ -10,7 +10,7 @@ Comming Soon
 
 * [x] Android (iOS Coming Soon)
 
-  * [] Fetch local songs (Inbuilt Permission)
+  * [x] Fetch remote songs (Inbuilt Permission)
   * [] Beautiful UI with multiple themes(Coming Soon)
   * [] Animation
   * [] Full Fledged Example

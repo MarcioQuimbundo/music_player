@@ -11,6 +11,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   fluttery_audio: 0.0.3
   permission: ^0.1.0
+  meta: ^1.1.6
 
 dev_dependencies:
   flutter_test:
