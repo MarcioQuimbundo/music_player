@@ -11,6 +11,7 @@ Comming Soon
 * [x] Android (iOS Coming Soon)
 
   * [x] Fetch remote songs (Inbuilt Permission)
+  * [x] FFT Animation
   * [] Beautiful UI with multiple themes(Coming Soon)
   * [] Animation
   * [] Full Fledged Example
